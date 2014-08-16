@@ -1,0 +1,18 @@
+{  
+    "name": "Front Tools",  
+    "version": "1.0.0",  
+    "manifest_version": 2,  
+    "icons": {  
+        "48": "img/logo.png"  
+    },
+    "browser_action": {  
+      "default_icon": "img/logo.png",  
+      "default_popup": "popup.html"
+    },
+    "options_page": "options-proxy.html",
+    "permissions": [
+          "storage",
+          "proxy"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}  

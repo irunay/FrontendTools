@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Front Tools Settings</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/proxy-setting.js"></script>
+
+  </head>
+  <body>
+    <div class="setting-container">
+
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand">Front Tools</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="options-proxy.html">代理</a>
+                </li>
+                <li>
+                    <a href="options-redirect.html">重定向</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="setting-add-proxy">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#setting_dialog" 
+                data-title="添加代理" data-template="proxy_setting_view">添加代理</button>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="40">#</th>
+                        <th width="200">名称</th>
+                        <th>类型</th>
+                        <th>服务器</th>
+                        <th>端口</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>本地测试</td>
+                        <td>http</td>
+                        <td>127.0.0.1</td>
+                        <td>8080</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="setting-add-rule">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#setting_dialog"
+                data-title="添加新规则" data-template="rule_setting_view">添加新规则</button>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="40">#</th>
+                        <th width="200">名称</th>
+                        <th width="200">代理</th>
+                        <th>匹配规则</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>校友汇开发</td>
+                        <td>Otto</td>
+                        <td>本地测试</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="setting_dialog" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+
+        <script id="proxy_setting_view" type="text/template">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><%=title%></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <input type="hidden" name="modifyFlag" />
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="proxyName" placeholder="名称" required value="<%=data.name%>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">代理类型</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                              <input type="radio" name="proxyType" value="HTTP" <%=_.indexOf(['HTTPS', 'SOCKS4', 'SOCKS5'], data.type)===-1?'checked':''%> > HTTP
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="proxyType" value="HTTPS"> HTTPS
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="proxyType" value="SOCKS4"> SOCKS4
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="proxyType" value="SOCKS5"> SOCKS5
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">服务器</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="proxyHost" placeholder="服务器" required value="<%=data.host%>" />
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="proxyPort" placeholder="端口" required value="<%=data.port%>" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </script>
+        <script id="rule_setting_view" type="text/template">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><%=title%></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">规则名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="规则名称" required value="<%=data.name%>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">匹配规则</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="规则列表URL" value="<%=data.url%>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" placeholder="匹配规则，每行一条"><%=data.content%></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">代理</label>
+                        <div class="col-sm-5">
+                            <select class="form-control">
+                              <option>URL</option>
+                              <option>Header:Host</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </script>
+    </div>
+  </body>
+</html>

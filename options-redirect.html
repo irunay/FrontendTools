@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Front Tools Settings</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <div class="setting-container">
+
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand">Front Tools</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="options-proxy.html">代理</a>
+                </li>
+                <li class="active">
+                    <a href="options-redirect.html">重定向</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="setting-main">
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dialog_add_rule">添加新规则</button>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>名称</th>
+                        <th>匹配</th>
+                        <th>原始值</th>
+                        <th>替换为</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                        <td>@fat</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="dialog_add_rule" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">添加匹配规则</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="input_rule_name" class="col-sm-2 control-label">规则名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input_rule_name" placeholder="规则名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_match_type" class="col-sm-2 control-label">匹配类型</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control">
+                                      <option>URL</option>
+                                      <option>Header:Host</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="match_mode" value="wildcard" checked>通配符</label>
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="match_mode" value="reg">正则表达式</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_match_rule" class="col-sm-2 control-label">匹配规则</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input_match_rule" placeholder="匹配规则">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_replace_type" class="col-sm-2 control-label">替换类型</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control">
+                                      <option>URL</option>
+                                      <option>Header:Host</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="replace_mode" value="wildcard" checked>通配符</label>
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="replace_mode" value="reg">正则表达式</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_replace_from" class="col-sm-2 control-label">原值</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input_replace_from" placeholder="原值">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_replace_to" class="col-sm-2 control-label">新值</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input_replace_to" placeholder="新值">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>   
+
+    </div>
+  </body>
+</html>
