@@ -45,11 +45,11 @@
                         <th>端口</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="proxy-list">
                     <tr>
-                        <td>1</td>
-                        <td>本地测试</td>
-                        <td>http</td>
+                        <td>0</td>
+                        <td>示例</td>
+                        <td>HTTP</td>
                         <td>127.0.0.1</td>
                         <td>8080</td>
                     </tr>
@@ -69,12 +69,12 @@
                         <th>匹配规则</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="rule-list">
                     <tr>
-                        <td>1</td>
+                        <td>0</td>
                         <td>校友汇开发</td>
-                        <td>Otto</td>
-                        <td>本地测试</td>
+                        <td>翻墙代理</td>
+                        <td>*://google.com/*</td>
                     </tr>
                 </tbody>
             </table>
@@ -93,8 +93,8 @@
                 <h4 class="modal-title"><%=title%></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
-                    <input type="hidden" name="modifyFlag" />
+                <form class="form-horizontal form-proxy" role="form" action="#">
+                    <input type="hidden" name="proxyId" required value="<%=data.id%>"/>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-10">
@@ -108,13 +108,13 @@
                               <input type="radio" name="proxyType" value="HTTP" <%=_.indexOf(['HTTPS', 'SOCKS4', 'SOCKS5'], data.type)===-1?'checked':''%> > HTTP
                             </label>
                             <label class="radio-inline">
-                              <input type="radio" name="proxyType" value="HTTPS"> HTTPS
+                              <input type="radio" name="proxyType" value="HTTPS" <%=data.type=='HTTPS'?'checked':''%>> HTTPS
                             </label>
                             <label class="radio-inline">
-                              <input type="radio" name="proxyType" value="SOCKS4"> SOCKS4
+                              <input type="radio" name="proxyType" value="SOCKS4" <%=data.type=='SOCKS4'?'checked':''%>> SOCKS4
                             </label>
                             <label class="radio-inline">
-                              <input type="radio" name="proxyType" value="SOCKS5"> SOCKS5
+                              <input type="radio" name="proxyType" value="SOCKS5" <%=data.type=='SOCKS5'?'checked':''%>> SOCKS5
                             </label>
                         </div>
                     </div>
@@ -131,7 +131,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-primary btn-save-proxy">确定</button>
             </div>
         </script>
         <script id="rule_setting_view" type="text/template">
@@ -140,31 +140,33 @@
                 <h4 class="modal-title"><%=title%></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                <form class="form-horizontal form-rule" role="form">
+                    <input type="hidden" name="ruleId" required value="<%=data.id%>"/>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">规则名称</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="规则名称" required value="<%=data.name%>" />
+                            <input type="text" name="ruleName" class="form-control" placeholder="规则名称" required value="<%=data.name%>" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">匹配规则</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="规则列表URL" value="<%=data.url%>" />
+                            <input type="text" name="ruleUrl" class="form-control" placeholder="规则列表URL" value="<%=data.url%>" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" rows="3" placeholder="匹配规则，每行一条"><%=data.content%></textarea>
+                            <textarea class="form-control" name="ruleContent" rows="3" placeholder="匹配规则，每行一条"><%=data.content%></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">代理</label>
                         <div class="col-sm-5">
-                            <select class="form-control">
-                              <option>URL</option>
-                              <option>Header:Host</option>
+                            <select class="form-control" name="ruleProxy" required>
+                            <% _.each(data.proxies, function(p){ %>
+                                <option value="<%=p.id%>"><%=p.name%></option>
+                            <% }) %>
                             </select>
                         </div>
                     </div>
@@ -172,7 +174,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-primary btn-save-rule">确定</button>
             </div>
         </script>
     </div>
