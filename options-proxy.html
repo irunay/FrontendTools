@@ -12,7 +12,17 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/underscore-min.js"></script>
+    <script src="js/proxy-model.js"></script>
     <script src="js/proxy-setting.js"></script>
+
+    <style type="text/css">
+        pre{
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: none;
+        }
+    </style>
 
 </head>
 <body>
@@ -156,8 +166,9 @@
                         <div class="col-sm-5">
                             <select class="form-control" name="ruleProxy" required>
                             <% _.each(data.proxies, function(p){ %>
-                                <option value="<%=p.id%>"><%=p.name%></option>
-                            <% }) %></select>
+                                <option value="<%=p.id%>" <%=p.id==data.proxy?'selected':''%>><%=p.name%></option>
+                            <% }) %>
+                            </select>
                         </div>
                     </div>
                 </form>
