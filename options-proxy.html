@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,27 +14,24 @@
     <script src="js/underscore-min.js"></script>
     <script src="js/proxy-setting.js"></script>
 
-  </head>
-  <body>
+</head>
+<body>
     <div class="setting-container">
 
         <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand">Front Tools</a>
+                <a class="navbar-brand">Frontend Tools</a>
             </div>
             <ul class="nav navbar-nav">
                 <li class="active">
                     <a href="options-proxy.html">代理</a>
-                </li>
-                <li>
-                    <a href="options-redirect.html">重定向</a>
                 </li>
             </ul>
         </nav>
 
         <div class="setting-add-proxy">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#setting_dialog" 
-                data-title="添加代理" data-template="proxy_setting_view">添加代理</button>
+                data-title="添加代理" data-type="proxy">添加代理</button>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -43,6 +40,7 @@
                         <th>类型</th>
                         <th>服务器</th>
                         <th>端口</th>
+                        <th width="60"></th>
                     </tr>
                 </thead>
                 <tbody class="proxy-list">
@@ -52,6 +50,7 @@
                         <td>HTTP</td>
                         <td>127.0.0.1</td>
                         <td>8080</td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -59,7 +58,7 @@
 
         <div class="setting-add-rule">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#setting_dialog"
-                data-title="添加新规则" data-template="rule_setting_view">添加新规则</button>
+                data-title="添加新规则" data-type="rule">添加新规则</button>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -67,6 +66,7 @@
                         <th width="200">名称</th>
                         <th width="200">代理</th>
                         <th>匹配规则</th>
+                        <th width="60"></th>
                     </tr>
                 </thead>
                 <tbody class="rule-list">
@@ -75,6 +75,7 @@
                         <td>校友汇开发</td>
                         <td>翻墙代理</td>
                         <td>*://google.com/*</td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -82,8 +83,7 @@
 
         <div id="setting_dialog" class="modal fade">
             <div class="modal-dialog">
-                <div class="modal-content">
-                </div>
+                <div class="modal-content"></div>
             </div>
         </div>
 
@@ -98,34 +98,25 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="proxyName" placeholder="名称" required value="<%=data.name%>" />
-                        </div>
+                            <input type="text" class="form-control" name="proxyName" placeholder="名称" required value="<%=data.name%>" /></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">代理类型</label>
                         <div class="col-sm-10">
                             <label class="radio-inline">
-                              <input type="radio" name="proxyType" value="HTTP" <%=_.indexOf(['HTTPS', 'SOCKS4', 'SOCKS5'], data.type)===-1?'checked':''%> > HTTP
-                            </label>
+                              <input type="radio" name="proxyType" value="PROXY" <%=_.indexOf(['SOCKS', 'SOCKS5'], data.type)===-1?'checked':''%>> HTTP</label>
                             <label class="radio-inline">
-                              <input type="radio" name="proxyType" value="HTTPS" <%=data.type=='HTTPS'?'checked':''%>> HTTPS
-                            </label>
+                              <input type="radio" name="proxyType" value="SOCKS" <%=data.type=='SOCKS'?'checked':''%>>SOCKS4</label>
                             <label class="radio-inline">
-                              <input type="radio" name="proxyType" value="SOCKS4" <%=data.type=='SOCKS4'?'checked':''%>> SOCKS4
-                            </label>
-                            <label class="radio-inline">
-                              <input type="radio" name="proxyType" value="SOCKS5" <%=data.type=='SOCKS5'?'checked':''%>> SOCKS5
-                            </label>
+                              <input type="radio" name="proxyType" value="SOCKS5" <%=data.type=='SOCKS5'?'checked':''%>>SOCKS5</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">服务器</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="proxyHost" placeholder="服务器" required value="<%=data.host%>" />
-                        </div>
+                            <input type="text" class="form-control" name="proxyHost" placeholder="服务器" required value="<%=data.host%>" /></div>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" name="proxyPort" placeholder="端口" required value="<%=data.port%>" />
-                        </div>
+                            <input type="text" class="form-control" name="proxyPort" placeholder="端口" required value="<%=data.port%>" /></div>
                     </div>
                 </form>
             </div>
@@ -145,17 +136,17 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">规则名称</label>
                         <div class="col-sm-10">
-                            <input type="text" name="ruleName" class="form-control" placeholder="规则名称" required value="<%=data.name%>" />
-                        </div>
+                            <input type="text" name="ruleName" class="form-control" placeholder="规则名称" required value="<%=data.name%>" /></div>
                     </div>
+                    <!--
                     <div class="form-group">
                         <label class="col-sm-2 control-label">匹配规则</label>
                         <div class="col-sm-10">
-                            <input type="text" name="ruleUrl" class="form-control" placeholder="规则列表URL" value="<%=data.url%>" />
-                        </div>
+                            <input type="text" name="ruleUrl" class="form-control" placeholder="规则列表URL" value="<%=data.url%>" /></div>
                     </div>
+                    -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label"></label>
+                        <label class="col-sm-2 control-label">匹配规则</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="ruleContent" rows="3" placeholder="匹配规则，每行一条"><%=data.content%></textarea>
                         </div>
@@ -166,8 +157,7 @@
                             <select class="form-control" name="ruleProxy" required>
                             <% _.each(data.proxies, function(p){ %>
                                 <option value="<%=p.id%>"><%=p.name%></option>
-                            <% }) %>
-                            </select>
+                            <% }) %></select>
                         </div>
                     </div>
                 </form>
@@ -178,5 +168,5 @@
             </div>
         </script>
     </div>
-  </body>
+</body>
 </html>

@@ -10,6 +10,7 @@
 		            <td><%=type%></td>\
 		            <td><%=host%></td>\
 		            <td><%=port%></td>\
+		            <td align="right"><a href="#" data-toggle="modal" data-target="#setting_dialog" data-type="proxy" data-title="修改代理" data-id="<%=id%>">修改</a></td>\
 		        </tr>\
 			'
 		},
@@ -20,11 +21,24 @@
                     <td><%=id%></td>\
                     <td><%=name%></td>\
                     <td><%=proxy%></td>\
-                    <td><%=url%><br><%=content%></td>\
+                    <td><%=content%></td>\
+		            <td align="right"><a href="#" data-toggle="modal" data-target="#setting_dialog" data-type="rule" data-title="修改规则" data-id="<%=id%>">修改</a></td>\
 		        </tr>\
 			'
 		}
-	}
+	},
+	pacTemplate = '\
+		function FindProxyForURL(url, host) {\
+			<%_.each(data, function(r){%>\
+			<%_.each(r.content, function(c){%>\
+			if(shExpMatch(url,"<%=c%>")){\
+				return "<%=r.proxy.type%> <%=r.proxy.host%>:<%=r.proxy.port%>";\
+			}\
+			<%})%>\
+			<%})%>\
+			return "DIRECT";\
+		}\
+	';
 	
 	$(function(){
 
@@ -43,10 +57,24 @@
 
 				var data = {};
 				var target = $(e.relatedTarget);
-				data.title = target.attr('data-title');
+				var id = target.attr('data-id');
+				var type = target.attr('data-type');
 				data.data = {};
+				if(id && /^\d+$/.test(id)){
+					id = parseInt(id);
+					if(type == 'proxy'){
+						data.data = o.proxy[id];
+					}else if(type == 'rule'){
+						data.data = o.rule[id];
+					}					
+				}
 				data.data.proxies = o.proxy;
-				var template = target.attr("data-template");
+				data.title = target.attr('data-title');
+
+				console.log(data);
+
+				var template = type+"_setting_view";
+				console.log(template);
 				var html =  _.template($("#"+template).html(), data);
 				dialog.find(".modal-content").html(html);
 
@@ -95,13 +123,6 @@
 			ruleContent = $.trim($("textarea[name='ruleContent']").val()),
 			ruleProxy = $.trim($("select[name='ruleProxy']").val());
 
-			console.log({
-					'name':ruleName,
-					'url':ruleUrl,
-					'content':ruleContent,
-					'proxy':ruleProxy
-				});
-
 			if(ruleName && (ruleUrl || ruleContent) && ruleProxy){
 				save('rule', ruleId, {
 					'name':ruleName,
@@ -117,6 +138,14 @@
 		});
 
 		renderList();
+
+		chrome.storage.onChanged.addListener(function(changes, areaName){
+			if(changes.proxy || changes.rule){
+				refreshProxySetting();
+			}
+		});
+
+		refreshProxySetting();
 	
 	});
 
@@ -155,6 +184,56 @@
 			});		
 
 		});
+	}
+
+	function refreshProxySetting(){
+
+		chrome.storage.local.get(['proxy', 'rule'], function(o){
+
+			var data = [];
+
+			if(!o.proxy){
+				o.proxy = [];
+			}
+			if(!o.rule){
+				o.rule = [];
+			}
+
+			_.each(o.rule, function(e,i){
+
+				if(/^\d+$/.test(e.proxy) && parseInt(e.proxy)<o.proxy.length){
+					e.proxy = o.proxy[parseInt(e.proxy)];
+					e.content = e.content.split("\n");
+					data.push(e);
+				}
+
+			});
+
+			setPacScript(data);
+
+		});	
+
+	}
+
+	function setPacScript(data) {
+
+		console.log(data);
+
+		var pacScriptContent = _.template(pacTemplate, {'data':data});
+
+		console.log(pacScriptContent);
+
+		var config = {
+			mode: "pac_script",
+			pacScript: {
+				data: pacScriptContent
+			}
+		};
+
+		chrome.proxy.settings.set({value: config, scope: 'regular'},function(){
+			console.log('haha');
+		});
+
 	}
 
 })(jQuery);
