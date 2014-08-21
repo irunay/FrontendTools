@@ -15,19 +15,13 @@
             var data = {};
             var id = $(this).val();
 
-            if(/^\d+$/.test(id)){
-                id = parseInt(id);
-            }else{
-                return;
-            }
-
             if($(this).is(":checked")){
                 data.enabled = true;
             }else{
                 data.enabled = false;
             }
 
-            save('rule', id, data);
+            saveItem('rule', id, data);
         });
     });
 

@@ -1,22 +1,22 @@
-{  
-    "name": "Front Tools",  
-    "version": "1.0.0",  
-    "manifest_version": 2,  
-    "icons": {  
-        "48": "img/logo.png"  
+{
+    "name": "Frontend Tools",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "icons": {
+        "48": "img/logo.png"
     },
     "background": {
-      "page": "event-page.html",
-      "persistent": false
+        "page": "event-page.html",
+        "persistent": false
     },
-    "browser_action": {  
-      "default_icon": "img/logo.png",  
-      "default_popup": "popup.html"
+    "browser_action": {
+        "default_icon": "img/logo.png",
+        "default_popup": "popup.html"
     },
     "options_page": "options-proxy.html",
     "permissions": [
-          "storage",
-          "proxy"
+        "storage",
+        "proxy"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
-}  
+}

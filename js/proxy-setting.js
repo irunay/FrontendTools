@@ -5,12 +5,15 @@
 			'container': '.proxy-list',
 			'template': '\
 				<tr>\
-		            <td><%=id%></td>\
+		            <td><%=i+1%></td>\
 		            <td><%=name%></td>\
 		            <td><%=type%></td>\
 		            <td><%=host%></td>\
 		            <td><%=port%></td>\
-		            <td align="right"><a href="#" data-toggle="modal" data-target="#setting_dialog" data-type="proxy" data-title="修改代理" data-id="<%=id%>">修改</a></td>\
+		            <td align="right">\
+		            	<a href="#" data-toggle="modal" data-target="#setting_dialog" data-type="proxy" data-title="修改代理" data-id="<%=id%>">修改</a>\
+		            	<a href="#" class="delete-item" data-type="proxy" data-id="<%=id%>">删除</a>\
+		            </td>\
 		        </tr>\
 			'
 		},
@@ -18,11 +21,14 @@
 			'container': '.rule-list',
 			'template': '\
 				<tr>\
-                    <td><%=id%></td>\
+                    <td><%=i+1%></td>\
                     <td><%=name%></td>\
                     <td><%=proxyName%></td>\
                     <td><pre><%=content%></pre></td>\
-		            <td align="right"><a href="#" data-toggle="modal" data-target="#setting_dialog" data-type="rule" data-title="修改规则" data-id="<%=id%>">修改</a></td>\
+		            <td align="right">\
+		            	<a href="#" data-toggle="modal" data-target="#setting_dialog" data-type="rule" data-title="修改规则" data-id="<%=id%>">修改</a>\
+		            	<a href="#" class="delete-item" data-type="rule" data-id="<%=id%>">删除</a>\
+		            </td>\
 		        </tr>\
 			'
 		}
@@ -37,10 +43,10 @@
 			chrome.storage.local.get(['proxy', 'rule'], function(o){
 
 				if(!o.proxy){
-					o.proxy = [];
+					o.proxy = {};
 				}
 				if(!o.rule){
-					o.rule = [];
+					o.rule = {};
 				}
 
 				var data = {};
@@ -48,14 +54,13 @@
 				var id = target.attr('data-id');
 				var type = target.attr('data-type');
 				data.data = {};
-				if(id && /^\d+$/.test(id)){
-					id = parseInt(id);
+				if($.trim(id) !== ''){
 					if(type == 'proxy'){
 						data.data = o.proxy[id];
 					}else if(type == 'rule'){
 						data.data = o.rule[id];
-					}					
-				}
+					}
+				}					
 				data.data.proxies = o.proxy;
 				data.title = target.attr('data-title');
 
@@ -81,7 +86,7 @@
 			proxyPort = $.trim($("input[name='proxyPort']").val());
 
 			if(proxyName && proxyType && proxyHost && proxyPort){
-				save('proxy', proxyId, {
+				saveItem('proxy', proxyId, {
 					'name':proxyName,
 					'type':proxyType,
 					'host':proxyHost,
@@ -108,11 +113,11 @@
 			ruleProxy = $.trim($("select[name='ruleProxy']").val());
 
 			if(ruleName && (ruleUrl || ruleContent) && ruleProxy){
-				save('rule', ruleId, {
+				saveItem('rule', ruleId, {
 					'name':ruleName,
 					'url':ruleUrl,
 					'content':ruleContent,
-					'proxy':parseInt(ruleProxy),
+					'proxy':ruleProxy,
 					'enabled':false
 				}, renderList);
 				$('#setting_dialog').modal('hide');
@@ -122,22 +127,33 @@
 
 		});
 
+		$("body").on("click", ".delete-item", function(e){
+			e.preventDefault();
+			var id = $(this).attr("data-id");
+			var type = $(this).attr("data-type");
+			deleteItem(type, id, renderList);
+		});
+
 		renderList();
 	
 	});
 
 	function renderList(){
 		chrome.storage.local.get(['proxy', 'rule'], function(o){
-			$.each(o, function(key, data){
+			_.each(o, function(data, key){
 				var container = $(templateConfig[key].container);
 				container.empty();
 				if(key=='rule'){
 					var proxies = o.proxy;
 				}
-				$.each(data, function(i, oo){
-					if(key=='rule'){
+				var i = 0;
+				_.each(data, function(oo){
+					if(key=='rule' && proxies[oo.proxy]){
 						oo.proxyName = proxies[oo.proxy].name;
+					}else{
+						oo.proxyName = 'NULL';
 					}
+					oo.i = i++;
 					container.append(_.template(templateConfig[key].template, oo));
 				});
 			});

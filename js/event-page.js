@@ -25,8 +25,8 @@ function refreshProxySetting(){
                 return;
             }
 
-            if(/^\d+$/.test(e.proxy) && parseInt(e.proxy)<o.proxy.length){
-                e.proxy = o.proxy[parseInt(e.proxy)];
+            if(o.proxy[e.proxy]){
+                e.proxy = o.proxy[e.proxy];
                 e.content = e.content.split("\n");
                 data.push(e);
             }
@@ -63,7 +63,10 @@ function setPacScript(data) {
         }
     };
 
+    console.log("pacData:", data);
+
     chrome.proxy.settings.set({value: config, scope: 'regular'},function(){
+        console.log("pacScript:", pacScriptContent);
         console.log('update pacScript');
     });
 

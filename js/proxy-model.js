@@ -1,18 +1,18 @@
-function save(type, id, data, callback){
+function saveItem(type, id, data, callback){
     chrome.storage.local.get(type, function(detail){
 
         if(!detail[type]){
-            detail[type] = [];
+            detail[type] = {};
         }
 
-        if(/^\d+$/.test(id) && parseInt(id)<detail[type].length){
-            data.id = parseInt(id);
+        if(id && detail[type][id]){
             _.each(data, function(v, k){
-                detail[type][parseInt(id)][k] = v;
+                detail[type][id][k] = v;
             });
         }else{
-            data.id = detail[type].length;
-            detail[type].push(data);
+            id = getUID(type);
+            data.id = id;
+            detail[type][id] = data;
         }
 
         var o = {};
@@ -25,4 +25,33 @@ function save(type, id, data, callback){
         });
 
     });
+}
+
+function deleteItem(type, id, callback){
+    chrome.storage.local.get(type, function(detail){
+
+        if(!detail[type]){
+            detail[type] = {};
+        }
+
+        if(id && detail[type][id]){
+            delete detail[type][id];
+        }
+
+        var o = {};
+        o[type] = detail[type];
+
+        chrome.storage.local.set(o, function(){
+            if(typeof callback == 'function'){
+                callback();
+            }
+        });
+
+    });
+}
+
+
+function getUID(prefix){
+    prefix = prefix?prefix+'_':'id_';
+    return prefix + (new Date()).getTime() + _.uniqueId();
 }
