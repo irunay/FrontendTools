@@ -117,8 +117,7 @@
 					'name':ruleName,
 					'url':ruleUrl,
 					'content':ruleContent,
-					'proxy':ruleProxy,
-					'enabled':false
+					'proxy':ruleProxy
 				}, renderList);
 				$('#setting_dialog').modal('hide');
 			}else{

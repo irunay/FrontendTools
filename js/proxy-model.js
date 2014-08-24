@@ -12,6 +12,7 @@ function saveItem(type, id, data, callback){
         }else{
             id = getUID(type);
             data.id = id;
+            data.enabled = false;
             detail[type][id] = data;
         }
 
