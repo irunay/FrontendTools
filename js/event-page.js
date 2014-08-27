@@ -41,20 +41,20 @@ function refreshProxySetting(){
 
 function setPacScript(data) {
 
-    var  pacTemplate = '\
-        function FindProxyForURL(url, host) {\
-            <%_.each(data, function(r){%>\
-            <%_.each(r.content, function(c){%>\
-            if(shExpMatch(url,"<%=c%>")){\
-                return "<%=r.proxy.type%> <%=r.proxy.host%>:<%=r.proxy.port%>";\
-            }\
-            <%})%>\
-            <%})%>\
-            return "DIRECT";\
-        }\
-    ';
+    var pacScriptContent = 'function FindProxyForURL(url, host){';
 
-    var pacScriptContent = _.template(pacTemplate, {'data':data});
+    _.each(data, function(r){
+        _.each(r.content, function(c){
+            if($.trim(c)===''){
+                return;
+            }
+            pacScriptContent += 'if(shExpMatch(url,"'+c+'")){';
+            pacScriptContent += 'return "' + r.proxy.type + ' ' + r.proxy.host + ':' + r.proxy.port + '";';
+            pacScriptContent += '}';
+        });
+    });
+
+    pacScriptContent += 'return "DIRECT";}';
 
     var config = {
         mode: "pac_script",
@@ -63,11 +63,8 @@ function setPacScript(data) {
         }
     };
 
-    console.log("pacData:", data);
-
     chrome.proxy.settings.set({value: config, scope: 'regular'},function(){
         console.log("pacScript:", pacScriptContent);
-        console.log('update pacScript');
     });
 
 }
