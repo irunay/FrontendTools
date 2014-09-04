@@ -1,9 +1,10 @@
 {
     "name": "Frontend Tools",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "manifest_version": 2,
     "author": "Ray L",
     "homepage_url": "https://github.com/irunay/FrontendTools/",
+    "update_url": "http://ftools.sinaapp.com/update.xml",
     "description": "前端开发辅助工具，通过设置浏览器代理使指定域名指向到指定的IP",
     "icons": {
         "16": "img/icon16.png",
