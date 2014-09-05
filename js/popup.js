@@ -29,6 +29,11 @@
         chrome.storage.local.get(['rule','proxy'], function(o){
             var container = $(".pop-conent");
             container.empty();
+            console.log(o.rule);
+            if(!o.rule){
+                container.html('<div class="empty">还没有任何代理规则，点击<a href="options-proxy.html" target="proxyOptions">设置</a></div>');
+                return;
+            }
             _.each(o.rule, function(oo){
                 oo.proxyName = o.proxy[oo.proxy].name;
                 container.append(_.template(ruleTemplate, oo));

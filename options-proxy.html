@@ -21,7 +21,15 @@
             margin: 0;
             border: none;
             background: none;
+            max-height: 300px;
         }
+        .form-tip{
+            height: 34px;
+            line-height: 34px;
+            font-size: 12px;
+            color:#999;
+        }
+
     </style>
 
 </head>
@@ -68,7 +76,7 @@
 
         <div class="setting-add-rule">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#setting_dialog"
-                data-title="添加新规则" data-type="rule">添加新规则</button>
+                data-title="添加新规则" data-type="rule">添加代理转发规则</button>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -90,7 +98,6 @@
                 </tbody>
             </table>
         </div>
-
         <div id="setting_dialog" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content"></div>
@@ -146,30 +153,24 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">规则名称</label>
                         <div class="col-sm-10">
-                            <input type="text" name="ruleName" class="form-control" placeholder="规则名称" required value="<%=data.name%>" /></div>
+                            <input type="text" name="ruleName" class="form-control" placeholder="规则名称，帮助识别规则，如“翻墙列表”" required value="<%=data.name%>" /></div>
                     </div>
-                    <!--
                     <div class="form-group">
                         <label class="col-sm-2 control-label">匹配规则</label>
                         <div class="col-sm-10">
-                            <input type="text" name="ruleUrl" class="form-control" placeholder="规则列表URL" value="<%=data.url%>" /></div>
-                    </div>
-                    -->
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">匹配规则</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" name="ruleContent" rows="3" placeholder="匹配规则，每行一条"><%=data.content%></textarea>
+                            <textarea class="form-control" name="ruleContent" rows="3" placeholder="URL匹配规则，支持通配符“*”；支持多条，每行一条。"><%=data.content%></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">代理</label>
-                        <div class="col-sm-5">
+                        <label class="col-sm-2 control-label">使用代理</label>
+                        <div class="col-sm-4">
                             <select class="form-control" name="ruleProxy" required>
                             <% _.each(data.proxies, function(p){ %>
                                 <option value="<%=p.id%>" <%=p.id==data.proxy?'selected':''%>><%=p.name%></option>
                             <% }) %>
                             </select>
                         </div>
+                        <div class="col-sm-6"><div class="form-tip">匹配到上面规则的URL，都将使用此代理转发</div></div>
                     </div>
                 </form>
             </div>

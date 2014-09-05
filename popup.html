@@ -9,22 +9,38 @@
     <style type="text/css">
         .wrap{
             width:300px;
+            padding: 0 5px;
         }
         .pop-conent{
             min-height: 200px;
-            padding: 10px;
+        }
+        .banner{
+            padding: 5px;
+            border-bottom: 1px solid #EEE;
+        }
+        .loading{
+            text-align: center;
+            padding: 40px;
+        }
+        .empty{
+            text-align: center;
+            padding: 40px 10px;
+            color: #999;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
     <div class="wrap">
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a href="#">代理</a>
-            </li>
-        </ul>
+        <div class="banner clearfix">
+            <div class="pull-right">
+                <a href="options-proxy.html" class="btn btn-primary btn-xs" target="proxyOptions"><span class="glyphicon glyphicon-cog"></span> 设置</a>
+            </div>
+        </div>
         <div class="pop-conent">
-            
+            <div class="loading">
+                <img src="img/loading.gif" title="Loading"/>
+            </div>
         </div>
     </div>
     <script src="js/jquery.min.js"></script>
